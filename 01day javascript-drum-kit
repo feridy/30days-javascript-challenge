@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>JS Drum Kit</title>
+    <link rel="stylesheet" href="css/js_drum_kit.css">
+</head>
+<body>
+    <div class="keys">
+        <div data-key="65" class="key">
+            <kdb>A</kdb>
+            <span class="sound">clap</span>
+        </div>
+        <div data-key="83" class="key">
+            <kdb>S</kdb>
+            <span class="sound">hithat</span>
+        </div>
+        <div data-key="68" class="key">
+            <kdb>D</kdb>
+            <span class="sound">kick</span>
+        </div>
+        <div data-key="70" class="key">
+            <kdb>F</kdb>
+            <span class="sound">openhat</span>
+        </div>
+        <div data-key="71" class="key">
+            <kdb>G</kdb>
+            <span class="sound">boom</span>
+        </div>
+        <div data-key="72" class="key">
+            <kdb>H</kdb>
+            <span class="sound">ride</span>
+        </div>
+        <div data-key="74" class="key">
+            <kdb>J</kdb>
+            <span class="sound">snare</span>
+        </div>
+        <div data-key="75" class="key">
+            <kdb>K</kdb>
+            <span class="sound">tom</span>
+        </div>
+        <div data-key="76" class="key">
+            <kdb>L</kdb>
+            <span class="sound">tink</span>
+        </div>
+    </div>
+
+
+    <audio data-key="65" src="sounds/clap.wav"></audio>
+    <audio data-key="83" src="sounds/clap.wav"></audio>
+    <audio data-key="68" src="sounds/clap.wav"></audio>
+    <audio data-key="70" src="sounds/clap.wav"></audio>
+    <audio data-key="71" src="sounds/clap.wav"></audio>
+    <audio data-key="72" src="sounds/clap.wav"></audio>
+    <audio data-key="74" src="sounds/clap.wav"></audio>
+    <audio data-key="75" src="sounds/clap.wav"></audio>
+    <audio data-key="76" src="sounds/clap.wav"></audio>
+
+    <script type="text/javascript">
+    // remove playing 样式
+        function removeTransition(e){
+        //检测e.protertyName 是否为transform
+            if(e.propertyName !== 'transform') return;
+            //this.classList.remove('playing')
+            e.target.classList.remove('playing');
+        }
+        //按下按键开始播放音乐并开始动画效果
+        //动画效果在.playing 的样式，transform: scale(1.1) -放大1.1倍，
+        //box-shadow:0 0 1rem .5rem #ffc600 -外边框的阴影效果，羽化10px，范围5px，颜色我#ffc600
+        //border-color:#ffc600 外边框颜色修改为#ffc600
+        function playSound(e) {
+            //` ${}` this is modul ES6新增的特性
+            const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+            //div[data-key="68" css3 新增的选择器，样式选择器
+            //e.keyCode 获取keycode码
+            const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
+            //保证不是代码中的keycode，就进行return
+            if(!audio) return;
+            //classList.add('playing') 修改样式效果，新增样式到那个按键上的div中
+            key.classList.add('playing');
+            //重置audio的playing时间
+            audio.currentTime = 0;
+            //audio.play() 播放多媒体
+            audio.play();
+        }
+        //document.querySelectorAll('.key') return Nolist type
+        const keys = Array.from(document.querySelectorAll('.key'));
+        //addEventListener('transitionend',removeTransition) 监听动画播放完的时候，进行removerTransition 函数
+        //forEach (key =>key.)==forEach(function(key){
+        //                                             key.addEventListener('transitionend',removeTransition);
+        //                                            }
+        keys.forEach(key => key.addEventListener('transitionend',removeTransition));
+        window.addEventListener('keydown',playSound); 
+    </script>
+
+</body>
+</html>
