@@ -1,1 +1,1 @@
-# 30days-javascript-changes
+# 30days-javascript-challenge
